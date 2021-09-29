@@ -1,3 +1,5 @@
+import { Path, Step } from "./types"
+
 let md5 = require('blueimp-md5')
 
 export function bitPairs(input: string): string[] {
@@ -41,4 +43,12 @@ function hexStringToBinary(hex: string): string[] {
 
 function hex2bin(hex: string): string {
   return (parseInt(hex, 16).toString(2)).padStart(4, '0');
+}
+
+export function convertPathOriginFromBottomLeftToTopLeft(path: Path, height: number, width: number): Path {
+  return path.map(step => convertStepOriginFromBottomLeftToTopLeft(step, height, width))
+}
+
+export function convertStepOriginFromBottomLeftToTopLeft(step: Step, height: number, width: number): Step {
+  return { x: step.x, y: height - step.y - 1 }
 }
