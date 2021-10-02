@@ -35,7 +35,10 @@ export const StringBoard: React.FC<BoardProps> = ({ height, width, paths }) => {
       })
     }
 
-    setBoardState(tempBoard.map(row => [...row.map(cell => boardCharacters[cell]), '\n']).flat().join(""))
+    const paddingRow = ['+', ...Array(width).fill('-'), '+\n'].join("");
+    const content = tempBoard.map(row => ['|', ...row.map(cell => boardCharacters[cell]), '|\n']).flat().join("")
+
+    setBoardState(paddingRow.concat(content, paddingRow))
   }, [paths, height, width])
 
   return (
