@@ -8,13 +8,11 @@ interface BoardProps {
   paths: Path[];
 }
 
-const startCharacter = 'S'
-const endCharacter = 'E'
 const boardCharacters = [' ', '.', 'o', '+', '=', '*', 'B', '0', 'X', '@', '%', '&', '#', '/', '^', 'S', 'E']
 
-export const Board: React.FC<BoardProps> = ({ height, width, paths }) => {
+export const StringBoard: React.FC<BoardProps> = ({ height, width, paths }) => {
 
-  const [boardState, setBoardState] = useState<number[][]>([[]])
+  const [boardState, setBoardState] = useState("")
 
   useEffect(() => {
     const tempBoard: number[][] = Array(height).fill(null).map(() => Array(width).fill(0));
@@ -37,22 +35,13 @@ export const Board: React.FC<BoardProps> = ({ height, width, paths }) => {
       })
     }
 
-    console.log(tempBoard.map(row => [...row.map(cell => cell), '\n']).flat().reverse().join(""))
-
-    console.log(tempBoard.map(row => [...row.map(cell => boardCharacters[cell]), '\n']).flat().join(""))
-    setBoardState(tempBoard)
-  }, [paths])
+    setBoardState(tempBoard.map(row => [...row.map(cell => boardCharacters[cell]), '\n']).flat().join(""))
+  }, [paths, height, width])
 
   return (
     <div>
       I am a board that's {width}&times;{height}!
-      {boardState.map(row =>
-        <div>
-          {row.map(cell =>
-            <span style={{ fontFamily: 'monospace' }}>{boardCharacters[cell]}</span>
-          )}
-        </div>
-      )}
+      <pre>{boardState}</pre>
     </div>
   )
 }
