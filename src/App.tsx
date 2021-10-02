@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react';
 import { walk } from './pieces/bishop/bishop';
@@ -12,22 +11,8 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button onClick={() => setWalkResult(walk({ boardHeight, boardWidth, input: "and yet!" }))}>walk</button>
-        <StringBoard height={boardHeight} width={boardWidth} paths={[walkResult]} />
-      </header>
+      <button onClick={() => setWalkResult(walk({ boardHeight, boardWidth, input: "test input" }))}>walk</button>
+      <StringBoard height={boardHeight} width={boardWidth} paths={[walkResult]} />
     </div>
   );
 }
