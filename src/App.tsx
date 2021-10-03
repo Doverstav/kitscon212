@@ -5,14 +5,13 @@ import { Path } from './pieces/types';
 import { BoardProps, StringBoard } from './board/StringBoard';
 
 function App() {
-  const [walkResult, setWalkResult] = useState<Path>([]);
   const [boardHeight, setBoardHeight] = useState(9);
   const [boardWidth, setBoardWidth] = useState(17);
   const [input, setInput] = useState("test input")
   const [stringBoardProps, setStringBoardProps] = useState<BoardProps>({
     height: boardHeight,
     width: boardWidth,
-    paths: [walkResult]
+    paths: [[]]
   })
 
   useEffect(() => {
