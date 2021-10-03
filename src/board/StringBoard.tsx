@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { convertStepOriginFromBottomLeftToTopLeft } from '../pieces/helpers'
 import { Path } from '../pieces/types'
 
-interface BoardProps {
+export interface BoardProps {
   height: number;
   width: number;
   paths: Path[];
@@ -29,7 +29,7 @@ export const StringBoard: React.FC<BoardProps> = ({ height, width, paths }) => {
         }
 
         tempBoard[currentStep.y][currentStep.x] =
-          tempBoard[currentStep.y][currentStep.x] < 15
+          tempBoard[currentStep.y][currentStep.x] < 15 // Do not overwrite special start/end characters
             ? tempBoard[currentStep.y][currentStep.x] + 1
             : tempBoard[currentStep.y][currentStep.x]
       })
