@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { walk as bishopWalk } from './pieces/bishop/bishop';
 import { walk as knightWalk } from './pieces/knight/knight'
 import { walk as rookWalk } from './pieces/rook/rook'
+import { walk as kingWalk } from './pieces/king/king'
 import { BoardProps, StringBoard } from './board/StringBoard';
 import { WalkFunction } from './pieces/types';
 
 const BISHOP_ALGORITHM = "bishop"
 const ROOK_ALGORITHM = "rook"
 const KNIGHT_ALGORITHM = "knight"
+const KING_ALGORITHM = "king"
 
 function App() {
   const [boardHeight, setBoardHeight] = useState(9);
@@ -30,6 +32,8 @@ function App() {
       setWalkFunction(() => rookWalk)
     } else if(algorithm === KNIGHT_ALGORITHM) {
       setWalkFunction(() => knightWalk)
+    } else if(algorithm === KING_ALGORITHM) {
+      setWalkFunction(() => kingWalk)
     }
   }, [algorithm])
 
@@ -51,6 +55,7 @@ function App() {
           <option value={BISHOP_ALGORITHM}>Bishop</option>
           <option value={KNIGHT_ALGORITHM}>Knight</option>
           <option value={ROOK_ALGORITHM}>Rook</option>
+          <option value={KING_ALGORITHM}>King</option>
         </select>
       </div>
       <div>
