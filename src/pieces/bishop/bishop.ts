@@ -1,5 +1,5 @@
 import { bitPairs } from '../helpers'
-import { Path, WalkParams } from '../types'
+import { Path, Step, WalkParams } from '../types'
 
 const UP = '0'
 const DOWN = '1'
@@ -18,26 +18,33 @@ export function walk({ boardHeight, boardWidth, input }: WalkParams): Path {
   console.log(bitPairsInOrderOfProcessing)
 
   bitPairsInOrderOfProcessing.forEach(bitPair => {
-    let newY = path[path.length - 1].y
-    let newX = path[path.length - 1].x
+    let oldY = path[path.length - 1].y
+    let oldX = path[path.length - 1].x
 
-    const verticalBit = bitPair.charAt(0)
-    const horizontalBit = bitPair.charAt(1)
-
-    if (verticalBit === UP) {
-      newY = newY + 1 < boardHeight ? newY + 1 : newY
-    } else if (verticalBit === DOWN) {
-      newY = newY - 1 >= 0 ? newY - 1 : newY
-    }
-
-    if (horizontalBit === LEFT) {
-      newX = newX - 1 >= 0 ? newX - 1 : newX
-    } else if (horizontalBit === RIGHT) {
-      newX = newX + 1 < boardWidth ? newX + 1 : newX
-    }
-
-    path.push({ x: newX, y: newY })
+    path.push(move(oldX, oldY, boardHeight, boardWidth, bitPair))
   })
 
   return path
+}
+
+export function move(oldX: number, oldY: number, boardHeight: number, boardWidth: number, bitPair: string): Step {
+  const verticalBit = bitPair.charAt(0)
+  const horizontalBit = bitPair.charAt(1)
+
+  let newY = oldY
+  let newX = oldX
+
+  if (verticalBit === UP) {
+    newY = oldY + 1 < boardHeight ? oldY + 1 : oldY
+  } else if (verticalBit === DOWN) {
+    newY = oldY - 1 >= 0 ? oldY - 1 : oldY
+  }
+
+  if (horizontalBit === LEFT) {
+    newX = oldX - 1 >= 0 ? oldX - 1 : oldX
+  } else if (horizontalBit === RIGHT) {
+    newX = oldX + 1 < boardWidth ? oldX + 1 : oldX
+  }
+
+  return {x: newX, y: newY}
 }
