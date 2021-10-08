@@ -42,6 +42,7 @@ function App() {
   return (
     <div className="App">
       <div>
+        <label>Input to be hashed</label>
         <input value={input} onChange={(event) => setInput(event.target.value)} />
       </div>
       <div>

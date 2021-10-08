@@ -43,7 +43,6 @@ export const StringBoard: React.FC<BoardProps> = ({ height, width, paths }) => {
 
   return (
     <div>
-      I am a board that's {width}&times;{height}!
       <pre>{boardState}</pre>
     </div>
   )
