@@ -38,7 +38,6 @@ function App() {
   }, [algorithm])
 
   useEffect(() => {
-    console.log(walkFunction)
     const walkResult = walkFunction({ boardHeight, boardWidth, input })
     setStringBoardProps({ height: boardHeight, width: boardWidth, paths: [walkResult] })
   }, [boardHeight, boardWidth, input, walkFunction])

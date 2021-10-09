@@ -7,15 +7,11 @@ const LEFT = '0'
 const RIGHT = '1'
 
 export function bishopWalk({ boardHeight, boardWidth, input }: WalkParams): Path {
-  console.log('walking')
-
   const startY = Math.floor(boardHeight / 2)
   const startX = Math.floor(boardWidth / 2)
 
   const bitPairsInOrderOfProcessing = bitPairs(input)
   let path = [{ x: startX, y: startY }]
-
-  console.log(bitPairsInOrderOfProcessing)
 
   bitPairsInOrderOfProcessing.forEach(bitPair => {
     let oldY = path[path.length - 1].y
