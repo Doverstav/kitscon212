@@ -42,7 +42,7 @@ export const StringBoard: React.FC<BoardProps> = ({ height, width, paths }) => {
   }, [paths, height, width])
 
   return (
-    <div>
+    <div style={{fontSize: "20px"}}>
       <pre>{boardState}</pre>
     </div>
   )
