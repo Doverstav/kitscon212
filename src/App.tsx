@@ -6,6 +6,7 @@ import { rookWalk } from './pieces/rook/rook'
 import { kingWalk } from './pieces/king/king'
 import { BoardProps, StringBoard } from './board/StringBoard';
 import { WalkFunction } from './pieces/types';
+import { CanvasBoard } from './board/CanvasBoard';
 
 const BISHOP_ALGORITHM = "bishop"
 const ROOK_ALGORITHM = "rook"
@@ -77,6 +78,7 @@ function App() {
       </div>
 
       <StringBoard {...stringBoardProps} />
+      <CanvasBoard {...stringBoardProps}/>
     </div>
   );
 }
