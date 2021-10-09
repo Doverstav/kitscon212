@@ -6,7 +6,7 @@ const DOWN = '1'
 const LEFT = '0'
 const RIGHT = '1'
 
-export function walk({ boardHeight, boardWidth, input }: WalkParams): Path {
+export function bishopWalk({ boardHeight, boardWidth, input }: WalkParams): Path {
   console.log('walking')
 
   const startY = Math.floor(boardHeight / 2)
@@ -21,13 +21,13 @@ export function walk({ boardHeight, boardWidth, input }: WalkParams): Path {
     let oldY = path[path.length - 1].y
     let oldX = path[path.length - 1].x
 
-    path.push(move(oldX, oldY, boardHeight, boardWidth, bitPair))
+    path.push(bishopMove(oldX, oldY, boardHeight, boardWidth, bitPair))
   })
 
   return path
 }
 
-export function move(oldX: number, oldY: number, boardHeight: number, boardWidth: number, bitPair: string): Step {
+export function bishopMove(oldX: number, oldY: number, boardHeight: number, boardWidth: number, bitPair: string): Step {
   const verticalBit = bitPair.charAt(0)
   const horizontalBit = bitPair.charAt(1)
 

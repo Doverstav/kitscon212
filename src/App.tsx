@@ -1,9 +1,9 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import { walk as bishopWalk } from './pieces/bishop/bishop';
-import { walk as knightWalk } from './pieces/knight/knight'
-import { walk as rookWalk } from './pieces/rook/rook'
-import { walk as kingWalk } from './pieces/king/king'
+import { bishopWalk } from './pieces/bishop/bishop';
+import { knightWalk } from './pieces/knight/knight'
+import { rookWalk } from './pieces/rook/rook'
+import { kingWalk } from './pieces/king/king'
 import { BoardProps, StringBoard } from './board/StringBoard';
 import { WalkFunction } from './pieces/types';
 

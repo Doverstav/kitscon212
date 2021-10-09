@@ -6,7 +6,7 @@ const HORIZONTAL = '1'
 const NEGATIVE = '0'
 const POSITIVE = '1'
 
-export function walk({ boardHeight, boardWidth, input }: WalkParams): Path {
+export function rookWalk({ boardHeight, boardWidth, input }: WalkParams): Path {
   const startY = Math.floor(boardHeight / 2)
   const startX = Math.floor(boardWidth / 2)
 
@@ -17,13 +17,13 @@ export function walk({ boardHeight, boardWidth, input }: WalkParams): Path {
     let oldY = path[path.length - 1].y
     let oldX = path[path.length - 1].x
 
-    path.push(move(oldX, oldY, boardHeight, boardWidth, bitPair))
+    path.push(rookMove(oldX, oldY, boardHeight, boardWidth, bitPair))
   })
 
   return path
 }
 
-export function move(oldX: number, oldY: number, boardHeight: number, boardWidth: number, bitPair: string): Step {
+export function rookMove(oldX: number, oldY: number, boardHeight: number, boardWidth: number, bitPair: string): Step {
   const directionBit = bitPair.charAt(0)
   const valueBit = bitPair.charAt(1)
   const movementValue = valueBit === POSITIVE ? 1 : -1

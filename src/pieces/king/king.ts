@@ -1,12 +1,12 @@
-import { move as bishopMove } from "../bishop/bishop";
+import { bishopMove } from "../bishop/bishop";
 import { bitTriplets } from "../helpers";
-import { move as rookMove } from "../rook/rook";
+import { rookMove } from "../rook/rook";
 import { Path, WalkParams } from "../types";
 
 const ROOK = '0'
 const BISHOP = '1'
 
-export function walk({boardHeight, boardWidth, input}: WalkParams): Path {
+export function kingWalk({boardHeight, boardWidth, input}: WalkParams): Path {
   const startY = Math.floor(boardHeight / 2)
   const startX = Math.floor(boardWidth / 2)
 
