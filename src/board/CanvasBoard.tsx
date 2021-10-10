@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import { convertStepOriginFromBottomLeftToTopLeft } from "../pieces/helpers";
+import React, { useEffect, useRef } from "react";
 import {
   createBoardFromPaths,
   findLowestAndHighestvalueOnBoard,

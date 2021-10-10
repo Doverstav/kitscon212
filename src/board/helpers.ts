@@ -1,5 +1,4 @@
-import { convertStepOriginFromBottomLeftToTopLeft } from "../pieces/helpers";
-import { Path } from "../pieces/types";
+import { Path, Step } from "../pieces/types";
 
 export function createBoardFromPaths(height: number, width: number, paths: Path[]): number[][] {
   const tempBoard: number[][] = Array(height)
@@ -54,4 +53,12 @@ export function findLowestAndHighestvalueOnBoard(board: number[][]): {lowestValu
   }
 
   return {lowestValue, highestValue}
+}
+
+export function convertPathOriginFromBottomLeftToTopLeft(path: Path, height: number, width: number): Path {
+  return path.map(step => convertStepOriginFromBottomLeftToTopLeft(step, height, width))
+}
+
+export function convertStepOriginFromBottomLeftToTopLeft(step: Step, height: number, width: number): Step {
+  return { x: step.x, y: height - step.y - 1 }
 }

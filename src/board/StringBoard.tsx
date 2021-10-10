@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { convertStepOriginFromBottomLeftToTopLeft } from "../pieces/helpers";
 import { Path } from "../pieces/types";
 import { createBoardFromPaths } from "./helpers";
 
