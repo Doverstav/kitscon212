@@ -72,12 +72,52 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
             context.fillRect(currentStep.x * columnWidth, currentStep.y * rowHeight, columnWidth, rowHeight)
           })
         } */
+        let lowestValue: number = -1;
+        let highestValue: number = -1;
+        for (let y = 0; y < tempBoard.length; y++) {
+          for (let x = 0; x < tempBoard[y].length; x++) {
+            const currentValue = tempBoard[y][x]
+            if (currentValue !== 0 && currentValue !== 15 && currentValue !== 16) {
+              if(lowestValue === -1 || currentValue < lowestValue ) {
+                lowestValue = currentValue
+              }
+
+              if(highestValue === -1 || currentValue > highestValue) {
+                highestValue = currentValue
+              }
+            }
+          }
+        }
+
+        const lightnessStep = (80 - 20) / highestValue
+
+        console.log('lowestValue', lowestValue)
+        console.log('highestValue', highestValue)
 
         for (let y = 0; y < tempBoard.length; y++) {
           for (let x = 0; x < tempBoard[y].length; x++) {
             if (tempBoard[y][x] !== 0) {
-              const colorValue = 50 * tempBoard[y][x];
-              context.fillStyle = `rgb(${colorValue},120,255)`;
+              const lightnessValue = 80 - (lightnessStep * tempBoard[y][x]);
+              //context.fillStyle = `rgb(${colorValue},120,255)`;
+              context.fillStyle = `hsl(149, 53%, ${lightnessValue}%)`
+              context.fillRect(
+                x * columnWidth,
+                y * rowHeight,
+                columnWidth,
+                rowHeight
+              );
+            }
+            if(tempBoard[y][x] === 15) {
+              context.fillStyle = `hsl(149, 53%, 80%)`
+              context.fillRect(
+                x * columnWidth,
+                y * rowHeight,
+                columnWidth,
+                rowHeight
+              );
+            }
+            if(tempBoard[y][x] === 16) {
+              context.fillStyle = `hsl(149, 53%, 10%)`
               context.fillRect(
                 x * columnWidth,
                 y * rowHeight,
