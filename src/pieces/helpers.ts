@@ -1,10 +1,15 @@
 import { Path, Step } from "./types"
-
+import jsSHA from "jssha";
 let md5 = require('blueimp-md5')
 
+export const MD5 = "MD5"
+export const SHA256 = "SHA-256"
+export const SHA512 = "SHA-512"
+
+export type HashingAlgorithm = typeof MD5 | typeof SHA256 | typeof SHA512
+
 export function bitPairs(input: string): string[] {
-  const hexString = hash(input)
-  const binaryArray = hexStringToBinary(hexString)
+  const binaryArray = hexStringToBinary(input)
 
   let bitPairsInOrderOfProcessing: string[] = []
 
@@ -32,8 +37,7 @@ export function bitPairs(input: string): string[] {
 }
 
 export function bitTriplets(input: string): string[] {
-  const hexString = hash(input)
-  const binaryArray = hexStringToBinary(hexString)
+  const binaryArray = hexStringToBinary(input)
 
   let bitTriplets: string[] = []
 
@@ -65,8 +69,15 @@ export function bitTriplets(input: string): string[] {
   return bitTriplets
 }
 
-function hash(input: string): string {
-  const hash = md5(input)
+export function hash(input: string, algorithm: HashingAlgorithm): string {
+  let hash = ""
+  if (algorithm === MD5) {
+    hash = md5(input)
+  } else {
+    const shaObj = new jsSHA(algorithm, "TEXT", { encoding: "UTF8" })
+    shaObj.update(input)
+    hash = shaObj.getHash("HEX");
+  }
 
   return hash;
 }

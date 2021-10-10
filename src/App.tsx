@@ -4,9 +4,11 @@ import { bishopWalk } from "./pieces/bishop/bishop";
 import { knightWalk } from "./pieces/knight/knight";
 import { rookWalk } from "./pieces/rook/rook";
 import { kingWalk } from "./pieces/king/king";
+import { hash, HashingAlgorithm } from './pieces/helpers'
 import { BoardProps, StringBoard } from "./board/StringBoard";
 import { WalkFunction } from "./pieces/types";
 import { CanvasBoard } from "./board/CanvasBoard";
+import { MD5, SHA256, SHA512 } from "./pieces/helpers";
 
 const BISHOP_ALGORITHM = "bishop";
 const ROOK_ALGORITHM = "rook";
@@ -18,6 +20,7 @@ function App() {
   const [boardWidth, setBoardWidth] = useState(17);
   const [input, setInput] = useState("test input");
   const [algorithm, setAlgorithm] = useState(BISHOP_ALGORITHM);
+  const [hashingAlgoritm, sethashingAlgorithm] = useState<HashingAlgorithm>(MD5)
 
   const [walkFunction, setWalkFunction] = useState<WalkFunction>(
     () => bishopWalk
@@ -41,13 +44,13 @@ function App() {
   }, [algorithm]);
 
   useEffect(() => {
-    const walkResult = walkFunction({ boardHeight, boardWidth, input });
+    const walkResult = walkFunction({ boardHeight, boardWidth, input: hash(input, hashingAlgoritm) });
     setStringBoardProps({
       height: boardHeight,
       width: boardWidth,
       paths: [walkResult],
     });
-  }, [boardHeight, boardWidth, input, walkFunction]);
+  }, [boardHeight, boardWidth, input, hashingAlgoritm, walkFunction]);
 
   return (
     <div className="App">
@@ -68,6 +71,17 @@ function App() {
           <option value={KNIGHT_ALGORITHM}>Knight</option>
           <option value={ROOK_ALGORITHM}>Rook</option>
           <option value={KING_ALGORITHM}>King</option>
+        </select>
+      </div>
+      <div>
+        <label>Select hashing algorithm</label>
+        <select
+          value={hashingAlgoritm}
+          onChange={(event) => sethashingAlgorithm(event.target.value as HashingAlgorithm)}
+          >
+          <option value={MD5}>{MD5}</option>
+          <option value={SHA256}>{SHA256}</option>
+          <option value={SHA512}>{SHA512}</option>
         </select>
       </div>
       <div>
