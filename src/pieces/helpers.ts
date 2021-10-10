@@ -40,7 +40,7 @@ export function bitTriplets(input: string): string[] {
   // (i + 2) < binaryArray.length will aggressively discard any incomplete sequence of 4 triplets
   // This could potentially throw away 11 bits, so this should probably check for any complete triplets left
   // and try to extract those.
-  for(let i = 0; (i + 2) < binaryArray.length; i = i + 3) {
+  for (let i = 0; (i + 2) < binaryArray.length; i = i + 3) {
     // Since we want triplets, the closets number divisible by 3 is 12
     // So we have to take 3 characters at a time
     // Then we follow the same logic as the orignal algorithm

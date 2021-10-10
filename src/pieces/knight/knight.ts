@@ -8,7 +8,7 @@ const DOWN = '1'
 const LEFT = '0'
 const RIGHT = '1'
 
-export function knightWalk({boardHeight, boardWidth, input}: WalkParams): Path {
+export function knightWalk({ boardHeight, boardWidth, input }: WalkParams): Path {
   const startY = Math.floor(boardHeight / 2)
   const startX = Math.floor(boardWidth / 2)
 
@@ -40,6 +40,6 @@ export function knightWalk({boardHeight, boardWidth, input}: WalkParams): Path {
 
     path.push({ x: newX, y: newY })
   })
-  
+
   return path
 }

@@ -42,5 +42,5 @@ export function bishopMove(oldX: number, oldY: number, boardHeight: number, boar
     newX = oldX + 1 < boardWidth ? oldX + 1 : oldX
   }
 
-  return {x: newX, y: newY}
+  return { x: newX, y: newY }
 }
