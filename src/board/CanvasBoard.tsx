@@ -26,10 +26,6 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
       if (savedRef && context) {
         const tempBoard = createBoardFromPaths(height, width, paths);
 
-        const { highestValue } = findLowestAndHighestvalueOnBoard(tempBoard);
-        const hue = Math.random() * 360;
-        const lightnessStep = (80 - 20) / highestValue;
-
         const squareSide =
           height > width ? CANVAS_HEIGHT / height : CANVAS_WIDTH / width;
         const widthOffset = (CANVAS_WIDTH - squareSide * width) / 2;
@@ -37,43 +33,16 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
 
         clearCanvas(context);
         paintBorders(context, heightOffset, widthOffset);
-
-        for (let y = 0; y < tempBoard.length; y++) {
-          for (let x = 0; x < tempBoard[y].length; x++) {
-            if (tempBoard[y][x] !== 0) {
-              const lightnessValue = 80 - lightnessStep * tempBoard[y][x];
-              //context.fillStyle = `hsl(149, 50%, ${lightnessValue}%)`;
-              context.fillStyle = `hsl(${hue}, 50%, ${lightnessValue}%)`;
-              context.fillRect(
-                widthOffset + x * squareSide,
-                heightOffset + y * squareSide,
-                squareSide,
-                squareSide
-              );
-            }
-            if (tempBoard[y][x] === 15) {
-              context.fillStyle = `hsl(${hue}, 50%, 80%)`;
-              context.fillRect(
-                widthOffset + x * squareSide,
-                heightOffset + y * squareSide,
-                squareSide,
-                squareSide
-              );
-            }
-            if (tempBoard[y][x] === 16) {
-              context.fillStyle = `hsl(${hue}, 50%, 10%)`;
-              context.fillRect(
-                widthOffset + x * squareSide,
-                heightOffset + y * squareSide,
-                squareSide,
-                squareSide
-              );
-            }
-          }
-        }
+        paintCanvas(context, tempBoard, squareSide, widthOffset, heightOffset);
       }
     }
   }, [height, width, paths]);
+
+  const clearCanvas = (context: CanvasRenderingContext2D) => {
+    context.fillStyle = "rgb(256,256,256)";
+    context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    context.beginPath();
+  };
 
   const paintBorders = (
     context: CanvasRenderingContext2D,
@@ -93,10 +62,50 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
     context.fillRect(CANVAS_WIDTH - widthOffset, 0, widthOffset, CANVAS_HEIGHT);
   };
 
-  const clearCanvas = (context: CanvasRenderingContext2D) => {
-    context.fillStyle = "rgb(256,256,256)";
-    context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    context.beginPath();
+  const paintCanvas = (
+    context: CanvasRenderingContext2D,
+    tempBoard: number[][],
+    squareSide: number,
+    widthOffset: number,
+    heightOffset: number
+  ) => {
+    const { highestValue } = findLowestAndHighestvalueOnBoard(tempBoard);
+    const hue = Math.random() * 360;
+    const lightnessStep = (80 - 20) / highestValue;
+
+    for (let y = 0; y < tempBoard.length; y++) {
+      for (let x = 0; x < tempBoard[y].length; x++) {
+        if (tempBoard[y][x] !== 0) {
+          const lightnessValue = 80 - lightnessStep * tempBoard[y][x];
+          //context.fillStyle = `hsl(149, 50%, ${lightnessValue}%)`;
+          context.fillStyle = `hsl(${hue}, 50%, ${lightnessValue}%)`;
+          context.fillRect(
+            widthOffset + x * squareSide,
+            heightOffset + y * squareSide,
+            squareSide,
+            squareSide
+          );
+        }
+        if (tempBoard[y][x] === 15) {
+          context.fillStyle = `hsl(${hue}, 50%, 80%)`;
+          context.fillRect(
+            widthOffset + x * squareSide,
+            heightOffset + y * squareSide,
+            squareSide,
+            squareSide
+          );
+        }
+        if (tempBoard[y][x] === 16) {
+          context.fillStyle = `hsl(${hue}, 50%, 10%)`;
+          context.fillRect(
+            widthOffset + x * squareSide,
+            heightOffset + y * squareSide,
+            squareSide,
+            squareSide
+          );
+        }
+      }
+    }
   };
 
   return (
