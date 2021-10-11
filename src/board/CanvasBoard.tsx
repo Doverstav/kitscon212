@@ -11,6 +11,14 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const saveAsImage = () => {
+    if (canvasRef && canvasRef.current) {
+      const image = canvasRef.current
+        .toDataURL("image/png")
+      window.open(image, '_blank')
+    }
+  };
+
   useEffect(() => {
     if (height > 0 && width > 0) {
       const savedRef = canvasRef.current;
@@ -117,11 +125,16 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
   }, [height, width, paths]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={CANVAS_WIDTH}
-      height={CANVAS_HEIGHT}
-      style={{ border: "1px solid black" }}
-    ></canvas>
+    <div>
+      <canvas
+        ref={canvasRef}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+        style={{ border: "1px solid black" }}
+      ></canvas>
+      <div>
+        <button onClick={() => saveAsImage()}>Save image</button>
+      </div>
+    </div>
   );
 }
