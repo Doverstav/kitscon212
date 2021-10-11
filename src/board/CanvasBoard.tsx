@@ -6,6 +6,7 @@ import {
 import { BoardProps } from "./StringBoard";
 
 export function CanvasBoard({ height, width, paths }: BoardProps) {
+  const BORDER_WIDTH = 5;
   const CANVAS_WIDTH = 500;
   const CANVAS_HEIGHT = 500;
 
@@ -27,7 +28,9 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
         const tempBoard = createBoardFromPaths(height, width, paths);
 
         const squareSide =
-          height > width ? CANVAS_HEIGHT / height : CANVAS_WIDTH / width;
+          height > width
+            ? (CANVAS_HEIGHT - BORDER_WIDTH * 2) / height
+            : (CANVAS_WIDTH - BORDER_WIDTH * 2) / width;
         const widthOffset = (CANVAS_WIDTH - squareSide * width) / 2;
         const heightOffset = (CANVAS_HEIGHT - squareSide * height) / 2;
 
@@ -49,17 +52,59 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
     heightOffset: number,
     widthOffset: number
   ) => {
-    // Paint border to show what's not part of the "art"
-    context.fillStyle = "rgb(0,0,0)";
+    // Set nonpainted area transparent
+    context.fillStyle = "rgb(255,255,255,0)";
+    // Top
     context.fillRect(0, 0, CANVAS_WIDTH, heightOffset);
+    // Bottom
     context.fillRect(
       0,
       CANVAS_HEIGHT - heightOffset,
       CANVAS_WIDTH,
       heightOffset
     );
+    // Left
     context.fillRect(0, 0, widthOffset, CANVAS_HEIGHT);
+    // Right
     context.fillRect(CANVAS_WIDTH - widthOffset, 0, widthOffset, CANVAS_HEIGHT);
+
+    // Paint borders
+    context.fillStyle = "rgb(0,0,0)";
+    if (heightOffset > 0) {
+      const borderLength = CANVAS_WIDTH - widthOffset * 2 + BORDER_WIDTH * 2
+      // Top
+      context.fillRect(
+        widthOffset - BORDER_WIDTH,
+        heightOffset - BORDER_WIDTH,
+        borderLength,
+        BORDER_WIDTH
+      );
+      // Bottom
+      context.fillRect(
+        widthOffset - BORDER_WIDTH,
+        CANVAS_HEIGHT - heightOffset,
+        borderLength,
+        BORDER_WIDTH
+      );
+    }
+
+    if (widthOffset > 0) {
+      const borderLength = CANVAS_HEIGHT - heightOffset * 2 + BORDER_WIDTH * 2
+      // Left
+      context.fillRect(
+        widthOffset - BORDER_WIDTH,
+        heightOffset - BORDER_WIDTH,
+        BORDER_WIDTH,
+        borderLength
+      );
+      // Right
+      context.fillRect(
+        CANVAS_WIDTH - widthOffset,
+        heightOffset - BORDER_WIDTH,
+        BORDER_WIDTH,
+        borderLength
+      );
+    }
   };
 
   const paintCanvas = (
@@ -114,7 +159,6 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
         ref={canvasRef}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
-        style={{ border: "1px solid black" }}
       ></canvas>
       <div>
         <button onClick={() => saveAsImage()}>Save image</button>
