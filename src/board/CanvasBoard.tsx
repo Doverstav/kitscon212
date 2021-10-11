@@ -26,25 +26,6 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
       if (savedRef && context) {
         const tempBoard = createBoardFromPaths(height, width, paths);
 
-        const rowLines = height - 1;
-        const rowHeight = CANVAS_HEIGHT / height;
-        const columnLines = width - 1;
-        const columnWidth = CANVAS_WIDTH / width;
-
-        clearCanvas(context);
-        /* // Create rowlines
-        for(let i = 1; i <= rowLines; i++) {
-          context.moveTo(0, rowHeight * i)
-          context.lineTo(CANVAS_WIDTH, rowHeight * i)
-          context.stroke()
-        }
-        // Create columnlines
-        for(let i = 1; i <= columnLines; i++) {
-          context.moveTo(columnWidth * i, 0)
-          context.lineTo(columnWidth * i, CANVAS_HEIGHT)
-          context.stroke()
-        } */
-
         const { highestValue } = findLowestAndHighestvalueOnBoard(tempBoard);
         const hue = Math.random() * 360;
         const lightnessStep = (80 - 20) / highestValue;
@@ -54,6 +35,7 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
         const widthOffset = (CANVAS_WIDTH - squareSide * width) / 2;
         const heightOffset = (CANVAS_HEIGHT - squareSide * height) / 2;
 
+        clearCanvas(context);
         paintBorders(context, heightOffset, widthOffset);
 
         for (let y = 0; y < tempBoard.length; y++) {
@@ -89,10 +71,6 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
             }
           }
         }
-
-        /* context.moveTo(0,0)
-        context.lineTo(CANVAS_WIDTH,CANVAS_HEIGHT)
-        context.stroke() */
       }
     }
   }, [height, width, paths]);
