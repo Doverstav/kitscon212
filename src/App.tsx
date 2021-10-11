@@ -18,7 +18,7 @@ const KING_ALGORITHM = "king";
 function App() {
   const [boardHeight, setBoardHeight] = useState(9);
   const [boardWidth, setBoardWidth] = useState(17);
-  const [input, setInput] = useState("test input");
+  const [input, setInput] = useState("kitscon");
   const [algorithm, setAlgorithm] = useState(BISHOP_ALGORITHM);
   const [hashingAlgoritm, sethashingAlgorithm] = useState<HashingAlgorithm>(MD5)
 
