@@ -49,12 +49,21 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
             context.fillRect(currentStep.x * columnWidth, currentStep.y * rowHeight, columnWidth, rowHeight)
           })
         } */
-        const { lowestValue, highestValue } =
+        const { highestValue } =
           findLowestAndHighestvalueOnBoard(tempBoard);
         const lightnessStep = (80 - 20) / highestValue;
 
-        console.log("lowestValue", lowestValue);
-        console.log("highestValue", highestValue);
+        const squareSide =
+          height > width ? CANVAS_HEIGHT / height : CANVAS_WIDTH / width;
+        const widthOffset = (CANVAS_WIDTH - (squareSide * width)) / 2
+        const heightOffset = (CANVAS_HEIGHT - (squareSide * height)) / 2
+
+        // Paint border to show what's not part of the "art"
+        context.fillStyle = 'rgb(0,0,0)'
+        context.fillRect(0,0, CANVAS_WIDTH, heightOffset)
+        context.fillRect(0, CANVAS_HEIGHT - heightOffset, CANVAS_WIDTH, heightOffset)
+        context.fillRect(0,0, widthOffset, CANVAS_HEIGHT)
+        context.fillRect(CANVAS_WIDTH - widthOffset, 0, widthOffset, CANVAS_HEIGHT)
 
         for (let y = 0; y < tempBoard.length; y++) {
           for (let x = 0; x < tempBoard[y].length; x++) {
@@ -62,28 +71,28 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
               const lightnessValue = 80 - lightnessStep * tempBoard[y][x];
               context.fillStyle = `hsl(149, 53%, ${lightnessValue}%)`;
               context.fillRect(
-                x * columnWidth,
-                y * rowHeight,
-                columnWidth,
-                rowHeight
+                widthOffset + (x * squareSide),
+                heightOffset + (y * squareSide),
+                squareSide,
+                squareSide
               );
             }
             if (tempBoard[y][x] === 15) {
               context.fillStyle = `hsl(149, 53%, 80%)`;
               context.fillRect(
-                x * columnWidth,
-                y * rowHeight,
-                columnWidth,
-                rowHeight
+                widthOffset + (x * squareSide),
+                heightOffset + (y * squareSide),
+                squareSide,
+                squareSide
               );
             }
             if (tempBoard[y][x] === 16) {
               context.fillStyle = `hsl(149, 53%, 10%)`;
               context.fillRect(
-                x * columnWidth,
-                y * rowHeight,
-                columnWidth,
-                rowHeight
+                widthOffset + (x * squareSide),
+                heightOffset + (y * squareSide),
+                squareSide,
+                squareSide
               );
             }
           }
