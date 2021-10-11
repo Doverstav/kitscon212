@@ -13,9 +13,8 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
 
   const saveAsImage = () => {
     if (canvasRef && canvasRef.current) {
-      const image = canvasRef.current
-        .toDataURL("image/png")
-      window.open(image, '_blank')
+      const image = canvasRef.current.toDataURL("image/png");
+      window.open(image, "_blank");
     }
   };
 
@@ -32,10 +31,7 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
         const columnLines = width - 1;
         const columnWidth = CANVAS_WIDTH / width;
 
-        context.fillStyle = "rgb(256,256,256)";
-        context.fillRect(0, 0, savedRef.width, savedRef.height);
-        context.beginPath();
-
+        clearCanvas(context);
         /* // Create rowlines
         for(let i = 1; i <= rowLines; i++) {
           context.moveTo(0, rowHeight * i)
@@ -49,14 +45,6 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
           context.stroke()
         } */
 
-        /* for(let i = 0; i < pathLength; i++) {
-          context.fillStyle = "rgb(0,0,0)"
-          paths.forEach(path => {
-            const currentStep = convertStepOriginFromBottomLeftToTopLeft(path[i], height, width)
-
-            context.fillRect(currentStep.x * columnWidth, currentStep.y * rowHeight, columnWidth, rowHeight)
-          })
-        } */
         const { highestValue } = findLowestAndHighestvalueOnBoard(tempBoard);
         const hue = Math.random() * 360;
         const lightnessStep = (80 - 20) / highestValue;
@@ -66,22 +54,7 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
         const widthOffset = (CANVAS_WIDTH - squareSide * width) / 2;
         const heightOffset = (CANVAS_HEIGHT - squareSide * height) / 2;
 
-        // Paint border to show what's not part of the "art"
-        context.fillStyle = "rgb(0,0,0)";
-        context.fillRect(0, 0, CANVAS_WIDTH, heightOffset);
-        context.fillRect(
-          0,
-          CANVAS_HEIGHT - heightOffset,
-          CANVAS_WIDTH,
-          heightOffset
-        );
-        context.fillRect(0, 0, widthOffset, CANVAS_HEIGHT);
-        context.fillRect(
-          CANVAS_WIDTH - widthOffset,
-          0,
-          widthOffset,
-          CANVAS_HEIGHT
-        );
+        paintBorders(context, heightOffset, widthOffset);
 
         for (let y = 0; y < tempBoard.length; y++) {
           for (let x = 0; x < tempBoard[y].length; x++) {
@@ -123,6 +96,30 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
       }
     }
   }, [height, width, paths]);
+
+  const paintBorders = (
+    context: CanvasRenderingContext2D,
+    heightOffset: number,
+    widthOffset: number
+  ) => {
+    // Paint border to show what's not part of the "art"
+    context.fillStyle = "rgb(0,0,0)";
+    context.fillRect(0, 0, CANVAS_WIDTH, heightOffset);
+    context.fillRect(
+      0,
+      CANVAS_HEIGHT - heightOffset,
+      CANVAS_WIDTH,
+      heightOffset
+    );
+    context.fillRect(0, 0, widthOffset, CANVAS_HEIGHT);
+    context.fillRect(CANVAS_WIDTH - widthOffset, 0, widthOffset, CANVAS_HEIGHT);
+  };
+
+  const clearCanvas = (context: CanvasRenderingContext2D) => {
+    context.fillStyle = "rgb(256,256,256)";
+    context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    context.beginPath();
+  };
 
   return (
     <div>
