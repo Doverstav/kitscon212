@@ -42,7 +42,7 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
   }, [height, width, paths]);
 
   const clearCanvas = (context: CanvasRenderingContext2D) => {
-    context.fillStyle = "rgb(256,256,256)";
+    context.fillStyle = "rgba(255,255,255,0)";
     context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     context.beginPath();
   };
@@ -52,26 +52,10 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
     heightOffset: number,
     widthOffset: number
   ) => {
-    // Set nonpainted area transparent
-    context.fillStyle = "rgb(255,255,255,0)";
-    // Top
-    context.fillRect(0, 0, CANVAS_WIDTH, heightOffset);
-    // Bottom
-    context.fillRect(
-      0,
-      CANVAS_HEIGHT - heightOffset,
-      CANVAS_WIDTH,
-      heightOffset
-    );
-    // Left
-    context.fillRect(0, 0, widthOffset, CANVAS_HEIGHT);
-    // Right
-    context.fillRect(CANVAS_WIDTH - widthOffset, 0, widthOffset, CANVAS_HEIGHT);
-
     // Paint borders
     context.fillStyle = "rgb(0,0,0)";
     if (heightOffset > 0) {
-      const borderLength = CANVAS_WIDTH - widthOffset * 2 + BORDER_WIDTH * 2
+      const borderLength = CANVAS_WIDTH - widthOffset * 2 + BORDER_WIDTH * 2;
       // Top
       context.fillRect(
         widthOffset - BORDER_WIDTH,
@@ -89,7 +73,7 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
     }
 
     if (widthOffset > 0) {
-      const borderLength = CANVAS_HEIGHT - heightOffset * 2 + BORDER_WIDTH * 2
+      const borderLength = CANVAS_HEIGHT - heightOffset * 2 + BORDER_WIDTH * 2;
       // Left
       context.fillRect(
         widthOffset - BORDER_WIDTH,
@@ -118,30 +102,30 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
     const hue = Math.random() * 360;
     const lightnessStep = (80 - 20) / highestValue;
 
+    // Create white background
+    context.fillStyle = "rgb(255,255,255)";
+    context.fillRect(
+      widthOffset,
+      heightOffset,
+      CANVAS_WIDTH - widthOffset * 2,
+      CANVAS_HEIGHT - heightOffset * 2
+    );
+
     for (let y = 0; y < tempBoard.length; y++) {
       for (let x = 0; x < tempBoard[y].length; x++) {
         if (tempBoard[y][x] !== 0) {
           const lightnessValue = 80 - lightnessStep * tempBoard[y][x];
           //context.fillStyle = `hsl(149, 50%, ${lightnessValue}%)`;
           context.fillStyle = `hsl(${hue}, 50%, ${lightnessValue}%)`;
-          context.fillRect(
-            widthOffset + x * squareSide,
-            heightOffset + y * squareSide,
-            squareSide,
-            squareSide
-          );
-        }
-        if (tempBoard[y][x] === 15) {
-          context.fillStyle = `hsl(${hue}, 50%, 80%)`;
-          context.fillRect(
-            widthOffset + x * squareSide,
-            heightOffset + y * squareSide,
-            squareSide,
-            squareSide
-          );
-        }
-        if (tempBoard[y][x] === 16) {
-          context.fillStyle = `hsl(${hue}, 50%, 10%)`;
+
+          if (tempBoard[y][x] === 15) {
+            context.fillStyle = `hsl(${hue}, 50%, 80%)`;
+          }
+
+          if (tempBoard[y][x] === 16) {
+            context.fillStyle = `hsl(${hue}, 50%, 10%)`;
+          }
+
           context.fillRect(
             widthOffset + x * squareSide,
             heightOffset + y * squareSide,
