@@ -15,7 +15,8 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
   const saveAsImage = () => {
     if (canvasRef && canvasRef.current) {
       const image = canvasRef.current.toDataURL("image/png");
-      window.open(image, "_blank");
+      const newWindow = window.open();
+      newWindow?.document.write(`<img src=${image} />`);
     }
   };
 
