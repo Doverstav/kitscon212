@@ -42,6 +42,7 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
   }, [height, width, paths]);
 
   const clearCanvas = (context: CanvasRenderingContext2D) => {
+    context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     context.fillStyle = "rgba(255,255,255,0)";
     context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     context.beginPath();
