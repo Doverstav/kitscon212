@@ -33,7 +33,7 @@ export const StringBoard: React.FC<BoardProps> = ({ height, width, paths }) => {
 
   useEffect(() => {
     if (height > 0 && width > 0) {
-      const tempBoard = createBoardFromPaths(height, width, paths)
+      const tempBoard = createBoardFromPaths(height, width, paths);
 
       const paddingRow = ["+", ...Array(width).fill("-"), "+\n"].join("");
       const content = tempBoard
@@ -46,8 +46,8 @@ export const StringBoard: React.FC<BoardProps> = ({ height, width, paths }) => {
   }, [paths, height, width]);
 
   return (
-    <div style={{ fontSize: "20px" }}>
-      <pre>{boardState}</pre>
+    <div>
+      <pre style={{ fontSize: "20px", marginBottom: "0" }}>{boardState}</pre>
     </div>
   );
 };

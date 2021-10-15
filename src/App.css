@@ -1,3 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+body {
+  margin: 0;
+  background-color: #f05d1a;
+}
+
 .App {
+  font-family: "Lato", sans-serif;
+  box-sizing: border-box;
   text-align: center;
+  max-width: 768px;
+  box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.75);
+  margin: auto;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  background-color: #f2f2ee;
+}
+
+.big-header {
+  font-size: 4em;
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+.input-container {
+  max-width: 300px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.split-input-container {
+  flex-direction: row;
+}
+
+.split-input-divider {
+  width: 50%;
+}
+
+.input-label {
+  width: 100%;
+  text-align: left;
+}
+
+.input-element {
+  width: 100%;
 }
