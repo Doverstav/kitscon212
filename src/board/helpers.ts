@@ -55,6 +55,10 @@ export function findLowestAndHighestvalueOnBoard(board: number[][]): {lowestValu
   return {lowestValue, highestValue}
 }
 
+export function buildUnWeightedGraph() {
+  throw new Error("Not yet implemented!")
+}
+
 export function convertPathOriginFromBottomLeftToTopLeft(path: Path, height: number, width: number): Path {
   return path.map(step => convertStepOriginFromBottomLeftToTopLeft(step, height, width))
 }
