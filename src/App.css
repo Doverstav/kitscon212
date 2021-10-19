@@ -23,6 +23,14 @@ body {
   margin-bottom: 16px;
 }
 
+.explainer {
+  max-width: 400px;
+  margin: auto;
+  margin-bottom: 32px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 .input-container {
   max-width: 300px;
   margin: auto;

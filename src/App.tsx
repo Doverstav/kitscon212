@@ -60,6 +60,9 @@ function App() {
   return (
     <div className="App">
       <h1 className="big-header">KitsCon 21.2</h1>
+      <p className="explainer">
+        I am an explainer!
+      </p>
       <div className="input-container">
         <label className="input-label">Input to be hashed</label>
         <input
@@ -96,7 +99,7 @@ function App() {
         </select>
       </div>
       <div className="input-container split-input-container">
-        <div className="split-input-divider" style={{marginRight: '8px'}}>
+        <div className="split-input-divider" style={{ marginRight: "8px" }}>
           <label className="input-label">Height</label>
           <input
             className="input-element"
@@ -106,7 +109,7 @@ function App() {
             onChange={(event) => setBoardHeight(Number(event.target.value))}
           />
         </div>
-        <div className="split-input-divider" style={{marginLeft: '8px'}}>
+        <div className="split-input-divider" style={{ marginLeft: "8px" }}>
           <label className="input-label">Width</label>
           <input
             className="input-element"
@@ -116,9 +119,6 @@ function App() {
             onChange={(event) => setBoardWidth(Number(event.target.value))}
           />
         </div>
-      </div>
-      <div className="input-container">
-        
       </div>
       <CanvasBoard {...stringBoardProps} />
       <StringBoard {...stringBoardProps} />
