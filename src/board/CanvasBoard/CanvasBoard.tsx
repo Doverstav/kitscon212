@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Step } from "../pieces/types";
+import { Step } from "../../pieces/types";
 import {
   convertPathOriginFromBottomLeftToTopLeft,
   convertStepOriginFromBottomLeftToTopLeft,
@@ -8,8 +8,8 @@ import {
   findAllEdges,
   findLowestAndHighestvalueOnBoard,
   PathEdge,
-} from "./helpers";
-import { BoardProps } from "./StringBoard";
+} from "../helpers";
+import { BoardProps } from "../StringBoard/StringBoard";
 
 export const LINES = "Lines";
 export const SQUARES = "Squares";

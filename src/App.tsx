@@ -5,7 +5,7 @@ import { knightWalk } from "./pieces/knight/knight";
 import { rookWalk } from "./pieces/rook/rook";
 import { kingWalk } from "./pieces/king/king";
 import { hash, HashingAlgorithm } from "./pieces/helpers";
-import { BoardProps, StringBoard } from "./board/StringBoard";
+import { BoardProps, StringBoard } from "./board/StringBoard/StringBoard";
 import { WalkFunction } from "./pieces/types";
 import {
   CanvasBoard,
@@ -13,7 +13,7 @@ import {
   LINES,
   SQUARES,
   VisualisationType,
-} from "./board/CanvasBoard";
+} from "./board/CanvasBoard/CanvasBoard";
 import { MD5, SHA256, SHA512 } from "./pieces/helpers";
 
 const BISHOP_ALGORITHM = "bishop";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Path } from "../pieces/types";
-import { createBoardFromPaths } from "./helpers";
+import { Path } from "../../pieces/types";
+import { createBoardFromPaths } from "../helpers";
 
 export interface BoardProps {
   height: number;
