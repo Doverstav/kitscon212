@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/kitscon212/static/css/main.11c6314d.chunk.css",
-    "main.js": "/kitscon212/static/js/main.8e789198.chunk.js",
-    "main.js.map": "/kitscon212/static/js/main.8e789198.chunk.js.map",
+    "main.js": "/kitscon212/static/js/main.fcf92153.chunk.js",
+    "main.js.map": "/kitscon212/static/js/main.fcf92153.chunk.js.map",
     "runtime-main.js": "/kitscon212/static/js/runtime-main.c7388df7.js",
     "runtime-main.js.map": "/kitscon212/static/js/runtime-main.c7388df7.js.map",
     "static/js/2.5e01829a.chunk.js": "/kitscon212/static/js/2.5e01829a.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.c7388df7.js",
     "static/js/2.5e01829a.chunk.js",
     "static/css/main.11c6314d.chunk.css",
-    "static/js/main.8e789198.chunk.js"
+    "static/js/main.fcf92153.chunk.js"
   ]
 }
