@@ -1,5 +1,11 @@
 import { Path, Step } from "../pieces/types";
 
+export interface PathEdge {
+  start: Step,
+  end: Step,
+  timesTaken: number
+}
+
 export function createBoardFromPaths(height: number, width: number, paths: Path[]): number[][] {
   const tempBoard: number[][] = Array(height)
     .fill(null)
@@ -30,7 +36,7 @@ export function createBoardFromPaths(height: number, width: number, paths: Path[
   return tempBoard
 }
 
-export function findLowestAndHighestvalueOnBoard(board: number[][]): {lowestValue: number, highestValue: number} {
+export function findLowestAndHighestvalueOnBoard(board: number[][]): { lowestValue: number, highestValue: number } {
   let lowestValue: number = -1;
   let highestValue: number = -1;
   for (let y = 0; y < board.length; y++) {
@@ -52,11 +58,35 @@ export function findLowestAndHighestvalueOnBoard(board: number[][]): {lowestValu
     }
   }
 
-  return {lowestValue, highestValue}
+  return { lowestValue, highestValue }
 }
 
-export function buildUnWeightedGraph() {
-  throw new Error("Not yet implemented!")
+export function findAllEdges(paths: Path[]): PathEdge[] {
+  const edges: PathEdge[] = []
+  paths.forEach(path => {
+    path.forEach((step, index, self) => {
+      if (self[index + 1] !== undefined) {
+        const newEdge: PathEdge = { start: step, end: self[index + 1], timesTaken: 1 }
+
+        let existingEdgeIndex = edges.findIndex(edge =>
+          edge.start.x === newEdge.start.x &&
+          edge.start.y === newEdge.start.y &&
+          edge.end.x === newEdge.end.x &&
+          edge.end.y === newEdge.end.y
+        )
+
+        if (existingEdgeIndex > -1) {
+          // Edge exists, increase count
+          const oldEdge = edges[existingEdgeIndex]
+          edges[existingEdgeIndex] = { ...oldEdge, timesTaken: oldEdge.timesTaken + 1 }
+        } else {
+          edges.push(newEdge)
+        }
+      }
+    })
+  })
+
+  return edges
 }
 
 export function convertPathOriginFromBottomLeftToTopLeft(path: Path, height: number, width: number): Path {
