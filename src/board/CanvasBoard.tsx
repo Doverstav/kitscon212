@@ -1,10 +1,14 @@
 import path from "path/posix";
 import React, { useEffect, useRef } from "react";
-import { Path } from "../pieces/types";
+import { Path, Step } from "../pieces/types";
 import {
+  convertPathOriginFromBottomLeftToTopLeft,
   convertStepOriginFromBottomLeftToTopLeft,
   createBoardFromPaths,
+  emptyPaths,
+  findAllEdges,
   findLowestAndHighestvalueOnBoard,
+  PathEdge,
 } from "./helpers";
 import { BoardProps } from "./StringBoard";
 
@@ -24,12 +28,28 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
   };
 
   useEffect(() => {
-    if (height > 0 && width > 0) {
+    if (height > 0 && width > 0 && !emptyPaths(paths)) {
       const savedRef = canvasRef.current;
       const context = savedRef?.getContext("2d");
 
       if (savedRef && context) {
         const tempBoard = createBoardFromPaths(height, width, paths);
+
+        const edges = findAllEdges(
+          paths.map((path) =>
+            convertPathOriginFromBottomLeftToTopLeft(path, height, width)
+          )
+        );
+        const starts = paths.map((path) =>
+          convertStepOriginFromBottomLeftToTopLeft(path[0], height, width)
+        );
+        const ends = paths.map((path) =>
+          convertStepOriginFromBottomLeftToTopLeft(
+            path[path.length - 1],
+            height,
+            width
+          )
+        );
 
         const squareSide =
           height > width
@@ -41,7 +61,15 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
         clearCanvas(context);
         paintBorders(context, heightOffset, widthOffset);
         //paintCanvas(context, tempBoard, squareSide, widthOffset, heightOffset);
-        paintCanvas2(context, paths, squareSide, widthOffset, heightOffset);
+        paintCanvas2(
+          context,
+          edges,
+          starts,
+          ends,
+          squareSide,
+          widthOffset,
+          heightOffset
+        );
       }
     }
   }, [height, width, paths]);
@@ -145,7 +173,9 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
 
   const paintCanvas2 = (
     context: CanvasRenderingContext2D,
-    paths: Path[],
+    edges: PathEdge[],
+    starts: Step[],
+    ends: Step[],
     squareSide: number,
     widthOffset: number,
     heightOffset: number
@@ -159,60 +189,46 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
       CANVAS_HEIGHT - heightOffset * 2
     );
 
-    const pathLength = paths[0].length;
+    context.fillStyle = "rgb(0,0,0)";
 
-    for (let i = 0; i < pathLength; i++) {
-      paths.forEach((path) => {
-        const convertedStep = convertStepOriginFromBottomLeftToTopLeft(
-          path[i],
-          height,
-          width
-        );
-        const distanceFromLeft = (x: number) => x * squareSide + squareSide / 2;
-        const distanceFromTop = (y: number) => y * squareSide + squareSide / 2;
-        const squareCenterX = widthOffset + distanceFromLeft(convertedStep.x)
-        const squareCenterY = heightOffset + distanceFromTop(convertedStep.y)
+    const distanceFromLeft = (x: number) => x * squareSide + squareSide / 2;
+    const distanceFromTop = (y: number) => y * squareSide + squareSide / 2;
 
-        context.fillStyle = "rgb(0,0,0)";
-        if (i === 0) {
-          context.beginPath();
-          context.arc(
-            squareCenterX,
-            squareCenterY,
-            squareSide / 4,
-            0,
-            2 * Math.PI
-          );
-          context.fill();
-        }
-        if (i < paths[0].length - 1) {
-          const convertedNextStep = convertStepOriginFromBottomLeftToTopLeft(
-            paths[0][i + 1],
-            height,
-            width
-          );
-          const lineStartX = squareCenterX;
-          const lineStartY = squareCenterY;
-          const lineEndX = widthOffset + distanceFromLeft(convertedNextStep.x);
-          const lineEndY = heightOffset + distanceFromTop(convertedNextStep.y);
+    edges.forEach((edge) => {
+      const lineStartX = widthOffset + distanceFromLeft(edge.start.x);
+      const lineStartY = heightOffset + distanceFromTop(edge.start.y);
+      const lineEndX = widthOffset + distanceFromLeft(edge.end.x);
+      const lineEndY = heightOffset + distanceFromTop(edge.end.y);
 
-          context.beginPath();
-          context.moveTo(lineStartX, lineStartY);
-          context.lineTo(lineEndX, lineEndY);
-          context.stroke();
-        }
-        if (i === paths[0].length - 1) {
-          const side = squareSide / 2;
-          context.beginPath();
-          context.fillRect(
-            squareCenterX - side / 2,
-            squareCenterY - side / 2,
-            side,
-            side
-          );
-        }
-      });
-    }
+      context.beginPath();
+      context.lineWidth = 2;
+      context.moveTo(lineStartX, lineStartY);
+      context.lineTo(lineEndX, lineEndY);
+      context.stroke();
+    });
+
+    starts.forEach((start) => {
+      const squareCenterX = widthOffset + distanceFromLeft(start.x);
+      const squareCenterY = heightOffset + distanceFromTop(start.y);
+
+      context.beginPath();
+      context.arc(squareCenterX, squareCenterY, squareSide / 4, 0, 2 * Math.PI);
+      context.fill();
+    });
+
+    ends.forEach((end) => {
+      const squareCenterX = widthOffset + distanceFromLeft(end.x);
+      const squareCenterY = heightOffset + distanceFromTop(end.y);
+
+      const side = squareSide / 2;
+      context.beginPath();
+      context.fillRect(
+        squareCenterX - side / 2,
+        squareCenterY - side / 2,
+        side,
+        side
+      );
+    });
   };
 
   return (
