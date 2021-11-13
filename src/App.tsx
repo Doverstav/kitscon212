@@ -87,7 +87,23 @@ function App() {
   return (
     <div className="App">
       <h1 className="big-header">KitsCon 21.2</h1>
-      <p className="explainer">I am an explainer!</p>
+      <p className="explainer">
+        On this page you can find an implementation of the{" "}
+        <a href="http://www.dirk-loss.de/sshvis/drunken_bishop.pdf">
+          drunken bishop algorithm
+        </a>
+        , along with some alternative movesets and visualisations.
+      </p>
+      <p className="explainer">
+        The board starts out at 9 &times; 17 as this is the size used in
+        OpenSSH, but the visualisation looks better at smaller sizes, so try out
+        something like 5 &times; 5.
+      </p>
+      <p className="explainer">
+        Experiment with different inputs, walk algorithms and visualisations. If
+        you see a visualisation you like, you can save it by clicking the button
+        under the picture!
+      </p>
       <div className="input-container">
         <label className="input-label">Input to be hashed</label>
         <input
