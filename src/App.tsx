@@ -7,7 +7,13 @@ import { kingWalk } from "./pieces/king/king";
 import { hash, HashingAlgorithm } from "./pieces/helpers";
 import { BoardProps, StringBoard } from "./board/StringBoard";
 import { WalkFunction } from "./pieces/types";
-import { CanvasBoard } from "./board/CanvasBoard";
+import {
+  CanvasBoard,
+  CanvasBoardProps,
+  LINES,
+  SQUARES,
+  VisualisationType,
+} from "./board/CanvasBoard";
 import { MD5, SHA256, SHA512 } from "./pieces/helpers";
 
 const BISHOP_ALGORITHM = "bishop";
@@ -22,6 +28,8 @@ function App() {
   const [algorithm, setAlgorithm] = useState(BISHOP_ALGORITHM);
   const [hashingAlgoritm, sethashingAlgorithm] =
     useState<HashingAlgorithm>(MD5);
+  const [visualisationAlgorithm, setVisualisationAlgorithm] =
+    useState<VisualisationType>(SQUARES);
 
   const [walkFunction, setWalkFunction] = useState<WalkFunction>(
     () => bishopWalk
@@ -30,6 +38,12 @@ function App() {
     height: boardHeight,
     width: boardWidth,
     paths: [[]],
+  });
+  const [canvasBoardProps, setCanvasBoardProps] = useState<CanvasBoardProps>({
+    height: boardHeight,
+    width: boardWidth,
+    paths: [[]],
+    visualisationAlgorithm: visualisationAlgorithm,
   });
 
   useEffect(() => {
@@ -55,14 +69,25 @@ function App() {
       width: boardWidth,
       paths: [walkResult],
     });
-  }, [boardHeight, boardWidth, input, hashingAlgoritm, walkFunction]);
+    setCanvasBoardProps({
+      height: boardHeight,
+      width: boardWidth,
+      paths: [walkResult],
+      visualisationAlgorithm: visualisationAlgorithm,
+    });
+  }, [
+    boardHeight,
+    boardWidth,
+    input,
+    hashingAlgoritm,
+    visualisationAlgorithm,
+    walkFunction,
+  ]);
 
   return (
     <div className="App">
       <h1 className="big-header">KitsCon 21.2</h1>
-      <p className="explainer">
-        I am an explainer!
-      </p>
+      <p className="explainer">I am an explainer!</p>
       <div className="input-container">
         <label className="input-label">Input to be hashed</label>
         <input
@@ -120,7 +145,20 @@ function App() {
           />
         </div>
       </div>
-      <CanvasBoard {...stringBoardProps} />
+      <div className="input-container">
+        <label className="input-label">Select visualisation algorithm</label>
+        <select
+          className="input-element"
+          value={visualisationAlgorithm}
+          onChange={(event) =>
+            setVisualisationAlgorithm(event.target.value as VisualisationType)
+          }
+        >
+          <option value={SQUARES}>{SQUARES}</option>
+          <option value={LINES}>{LINES}</option>
+        </select>
+      </div>
+      <CanvasBoard {...canvasBoardProps} />
       <StringBoard {...stringBoardProps} />
     </div>
   );

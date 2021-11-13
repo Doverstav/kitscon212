@@ -1,6 +1,5 @@
-import path from "path/posix";
 import React, { useEffect, useRef } from "react";
-import { Path, Step } from "../pieces/types";
+import { Step } from "../pieces/types";
 import {
   convertPathOriginFromBottomLeftToTopLeft,
   convertStepOriginFromBottomLeftToTopLeft,
@@ -12,7 +11,19 @@ import {
 } from "./helpers";
 import { BoardProps } from "./StringBoard";
 
-export function CanvasBoard({ height, width, paths }: BoardProps) {
+export const LINES = "Lines";
+export const SQUARES = "Squares";
+export type VisualisationType = typeof LINES | typeof SQUARES;
+export interface CanvasBoardProps extends BoardProps {
+  visualisationAlgorithm: VisualisationType;
+}
+
+export function CanvasBoard({
+  height,
+  width,
+  paths,
+  visualisationAlgorithm,
+}: CanvasBoardProps) {
   const BORDER_WIDTH = 5;
   const CANVAS_WIDTH = 500;
   const CANVAS_HEIGHT = 500;
@@ -33,24 +44,6 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
       const context = savedRef?.getContext("2d");
 
       if (savedRef && context) {
-        const tempBoard = createBoardFromPaths(height, width, paths);
-
-        const edges = findAllEdges(
-          paths.map((path) =>
-            convertPathOriginFromBottomLeftToTopLeft(path, height, width)
-          )
-        );
-        const starts = paths.map((path) =>
-          convertStepOriginFromBottomLeftToTopLeft(path[0], height, width)
-        );
-        const ends = paths.map((path) =>
-          convertStepOriginFromBottomLeftToTopLeft(
-            path[path.length - 1],
-            height,
-            width
-          )
-        );
-
         const squareSide =
           height > width
             ? (CANVAS_HEIGHT - BORDER_WIDTH * 2) / height
@@ -60,19 +53,46 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
 
         clearCanvas(context);
         paintBorders(context, heightOffset, widthOffset);
-        //paintCanvas(context, tempBoard, squareSide, widthOffset, heightOffset);
-        paintCanvas2(
-          context,
-          edges,
-          starts,
-          ends,
-          squareSide,
-          widthOffset,
-          heightOffset
-        );
+
+        if (visualisationAlgorithm === SQUARES) {
+          const tempBoard = createBoardFromPaths(height, width, paths);
+          paintSquares(
+            context,
+            tempBoard,
+            squareSide,
+            widthOffset,
+            heightOffset
+          );
+        } else if (visualisationAlgorithm === LINES) {
+          const edges = findAllEdges(
+            paths.map((path) =>
+              convertPathOriginFromBottomLeftToTopLeft(path, height, width)
+            )
+          );
+          const starts = paths.map((path) =>
+            convertStepOriginFromBottomLeftToTopLeft(path[0], height, width)
+          );
+          const ends = paths.map((path) =>
+            convertStepOriginFromBottomLeftToTopLeft(
+              path[path.length - 1],
+              height,
+              width
+            )
+          );
+
+          paintLines(
+            context,
+            edges,
+            starts,
+            ends,
+            squareSide,
+            widthOffset,
+            heightOffset
+          );
+        }
       }
     }
-  }, [height, width, paths]);
+  }, [height, width, paths, visualisationAlgorithm]);
 
   const clearCanvas = (context: CanvasRenderingContext2D) => {
     context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -125,7 +145,7 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
     }
   };
 
-  const paintCanvas = (
+  const paintSquares = (
     context: CanvasRenderingContext2D,
     tempBoard: number[][],
     squareSide: number,
@@ -171,7 +191,7 @@ export function CanvasBoard({ height, width, paths }: BoardProps) {
     }
   };
 
-  const paintCanvas2 = (
+  const paintLines = (
     context: CanvasRenderingContext2D,
     edges: PathEdge[],
     starts: Step[],
