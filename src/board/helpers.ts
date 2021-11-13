@@ -96,3 +96,7 @@ export function convertPathOriginFromBottomLeftToTopLeft(path: Path, height: num
 export function convertStepOriginFromBottomLeftToTopLeft(step: Step, height: number, width: number): Step {
   return { x: step.x, y: height - step.y - 1 }
 }
+
+export function emptyPaths(paths: Path[]) {
+  return paths.every(path => path.length === 0)
+}
